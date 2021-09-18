@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+    <title>Lead lists</title>
+    <style>
+      body{
+          box-sizing: border-box;
+      }
+      .lead{
+          padding: 10px 8px;
+          margin:6px 8px;
+          background-color: azure;
+      }
+    </style>
+</head>
+<body>
+    <a href= "{%url 'leads:lead-list' %}"> Go back to the leads</a>
+    <br />
+<h1>Create a new lead here </h1>
+<form method = "POST" action = ".">
+    {% csrf_token %} 
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
+</body>
+</html>
