@@ -14,11 +14,14 @@
     </style>
 </head>
 <body>
-<h1>The lead list are listed below as: </h1>
-{% for lead in leads %}
-<div class = "lead">
-<a href = "/leads/{{lead.pk}}/">{{lead.first_name}}  {{lead.lastname}} {{lead.age}}</a>
-</div>
-{% endfor %}
+    <a href= "/leads/"> Go back to the leads</a>
+    <br />
+<h1>Create a new lead here </h1>
+<form method = "POST" action = ".">
+    {% csrf_token %} 
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
 </body>
 </html>
