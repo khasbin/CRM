@@ -1,0 +1,23 @@
+<head>
+    <style>
+        .body{
+            box-sizing: border-box;
+        }
+        .lead{
+            padding: 10px 6px;
+            margin: 6px 4px;
+            background-color:blanchedalmond;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the home page for the leads </h1>
+    {% for lead in leads %}
+    <div class = "lead">
+       <a href = "/leads/{{lead.pk}}/"> {{lead.first_name}}
+        {{lead.last_name}}
+        {{lead.agent}}</a>
+    </div>
+    {% endfor %}
+</body>
+
