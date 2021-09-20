@@ -1,19 +1,6 @@
-<!DOCTYPE html>
-<html lang="eng">
-<head>
-    <title>Lead lists</title>
-    <style>
-      body{
-          box-sizing: border-box;
-      }
-      .lead{
-          padding: 10px 8px;
-          margin:6px 8px;
-          background-color: azure;
-      }
-    </style>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
     <a href= "{% url 'leads:lead-list' %}"> Go back to the leads</a>
     <br />
 <h1>Update lead: {{lead.first_name}}{{lead.last_name}} </h1>
@@ -23,5 +10,4 @@
     <button type="submit">Submit</button>
 </form>
 
-</body>
-</html>
+{% endblock %}

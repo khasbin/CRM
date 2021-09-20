@@ -1,26 +1,14 @@
-<!DOCTYPE html>
-<html lang="eng">
-<head>
-    <title>Lead lists</title>
-    <style>
-      body{
-          box-sizing: border-box;
-      }
-      .lead{
-          padding: 10px 8px;
-          margin:6px 8px;
-          background-color: azure;
-      }
-    </style>
-</head>
-<body>
-    <a href = "{% url 'leads:lead-create' %}">Create lead here</a>
-    <hr />
+{% extends 'base.html' %}
+
+{% block content %}
+
+<a href = "{% url 'leads:lead-create' %}">Create lead here</a>
+<hr />
 <h1>The lead list are listed below as: </h1>
 {% for lead in leads %}
 <div class = "lead">
 <a href = "{% url 'leads:lead-detail' lead.pk %}">{{lead.first_name}}  {{lead.lastname}} {{lead.age}}</a>
 </div>
 {% endfor %}
-</body>
-</html>
+
+{% endblock content %}
