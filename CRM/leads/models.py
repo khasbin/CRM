@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models.fields import CharField
 from django.contrib.auth.models import AbstractUser
 # Create your models here.
-
+ 
 class User(AbstractUser):
     pass
 
@@ -20,6 +20,8 @@ class Agent(models.Model):
 
     def __str__(self):
         return self.user.email
+
+
 
 
 

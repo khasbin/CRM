@@ -2,9 +2,20 @@ from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from django.views.generic.list import ListView
 from .models import Lead, Agent, User
-from .forms import LeadForm, LeadModelForm
+from .forms import LeadForm, LeadModelForm,CustomUserCreationForm
 from django.views import generic
+from django.core.mail import send_mail
+
+
 #Create Read Update Delete + Listview
+
+#view for signup
+class SignUpView(generic.CreateView):
+    template_name = "registration/signup.html"
+    form_class = CustomUserCreationForm
+
+    def get_success_url(self):
+        return reverse("login")
 
 # Create your views here.
 class LandingPageView(generic.TemplateView):
@@ -40,12 +51,24 @@ class LeadDetailView(generic.DetailView):
 #     }
 #     return render(request, "leads/lead_details.html", context)
 
+
+
 class LeadCreateView(generic.CreateView):
     template_name = "leads/lead_create.html"
     form_class = LeadModelForm
 
     def get_success_url(self):
         return reverse("leads:lead-list")
+
+    def form_valid(self, form):
+        subject = "A new lead has been created"
+        message = "Go to the crm site to view the new lead details"
+        from_email = "test@test.com"
+        recipient_list = ["test2@test.com"]
+        send_mail(subject, message, from_email, recipient_list)
+        # we want to send email whenever a lead is created 
+        return super(LeadCreateView, self).form_valid(form)
+
 
 def lead_create(request):
     form = LeadModelForm()
