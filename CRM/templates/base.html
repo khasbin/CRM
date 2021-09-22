@@ -1,12 +1,14 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang = "eng">
     <head>
         <meta charset="UTF-8">
         <meta name = "viewport" content="width = device-width, initial-scale = 1.0">
         <title>CRM application</title>
+        <link href = "{% static 'css/style.css' %}"/>
         <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     </head>
-
     <body>
     <div class = "max-w-6xl mx-auto">
     {% include 'navbar.html' %}
