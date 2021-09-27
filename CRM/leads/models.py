@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.fields import CharField
 from django.contrib.auth.models import AbstractUser
+from django.db.models.signals import post_save
 # Create your models here.
  
 class User(AbstractUser):
@@ -29,6 +30,12 @@ class Agent(models.Model):
         return self.user.email
 
 
+def create_userprofile_model(sender,instance,created, **kwargs):
+    if created:
+        UserProfileModel.objects.create(user = instance)
+    
+
+post_save.connect(create_userprofile_model, sender = User)
 
 
 
