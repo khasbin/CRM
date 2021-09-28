@@ -5,7 +5,8 @@ from django.db.models.signals import post_save
 # Create your models here.
  
 class User(AbstractUser):
-    pass
+    is_organizer = models.BooleanField(default = True)
+    is_agent = models.BooleanField(default = False)
 
 class UserProfileModel(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE)
