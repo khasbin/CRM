@@ -4,6 +4,7 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import AgentModelForm
 from .mixins import OrganizerorLoginRequiredMixin
+from  django.core.mail import send_mail
 # Create your views here.
 
 class AgentListView(OrganizerorLoginRequiredMixin, generic.ListView):
@@ -22,9 +23,20 @@ class AgentCreateView(OrganizerorLoginRequiredMixin, generic.CreateView):
         return reverse('agents:agent-list')
 
     def form_valid(self, form):
-        agent = form.save(commit = False)
-        agent.organization = self.request.user.userprofilemodel
-        agent.save()
+        user = form.save(commit = False)
+        user.is_agent = True
+        user.is_organizer = False
+        user.save()
+        Agent.objects.create(user = user, organization = self.request.user.userprofilemodel)
+
+        send_mail(
+            subject= "Invited as an agent",
+            message = "You are invited as an agent. Please login to start working as an agent", 
+            from_email="master@mail.com",
+            recipient_list=[user.email]       
+        )
+        # agent.organization = self.request.user.userprofilemodel
+        # agent.save()
         return super(AgentCreateView, self).form_valid(form)
 
 class AgentDetailView(OrganizerorLoginRequiredMixin, generic.DetailView):
