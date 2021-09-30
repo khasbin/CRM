@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import AgentModelForm
 from .mixins import OrganizerorLoginRequiredMixin
 from  django.core.mail import send_mail
+import random
 # Create your views here.
 
 class AgentListView(OrganizerorLoginRequiredMixin, generic.ListView):
@@ -27,6 +28,7 @@ class AgentCreateView(OrganizerorLoginRequiredMixin, generic.CreateView):
         user.is_agent = True
         user.is_organizer = False
         user.save()
+        user.set_password(f"{random.randint(0,100000)}")
         Agent.objects.create(user = user, organization = self.request.user.userprofilemodel)
 
         send_mail(
