@@ -171,3 +171,8 @@ def lead_delete(request, pk):
 #         "form":form
 #     }
 #     return render(request, "leads/lead_update.html", context)
+
+
+class AgentUpdateView(OrganizerorLoginRequiredMixin, generic.FormView):
+    template_name = "leads/agent_update.html"
+    form_class = None
