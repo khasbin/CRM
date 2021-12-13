@@ -25,4 +25,4 @@ class CustomUserCreationForm(UserCreationForm):
 class AgentUpdateForm(forms.Form):
     class Meta:
         model = Agent
-        fields = 
+        fields = ('organization', ) 
