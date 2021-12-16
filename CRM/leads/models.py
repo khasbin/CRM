@@ -8,7 +8,7 @@ class User(AbstractUser):
     is_organizer = models.BooleanField(default = True)
     is_agent = models.BooleanField(default = False)
 
-class UserProfileModel(models.Model):
+class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE)
 
     def __str__(self):
@@ -18,7 +18,7 @@ class Lead(models.Model):
     first_name = models.CharField(max_length = 20)
     last_name = models.CharField(max_length=20)
     age = models.IntegerField(default= 0)
-    organization = models.ForeignKey(UserProfileModel, on_delete = models.CASCADE)
+    organization = models.ForeignKey(UserProfile, null = True, on_delete = models.CASCADE)
     agent = models.ForeignKey("Agent", blank = True, null= True, on_delete=models.SET_NULL)
 
     def __str__(self):
@@ -26,17 +26,16 @@ class Lead(models.Model):
 
 class Agent(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE)
-    organization = models.ForeignKey(UserProfileModel, on_delete = models.CASCADE)
+    organization = models.ForeignKey(UserProfile, on_delete = models.CASCADE)
 
     def __str__(self):
         return self.user.email
 
-def create_userprofile_model(sender,instance,created, **kwargs):
+def create_userprofile(sender,instance,created, **kwargs):
     if created:
-        UserProfileModel.objects.create(user = instance)
+        UserProfile.objects.create(user = instance)
     
-
-post_save.connect(create_userprofile_model, sender = User)
+post_save.connect(create_userprofile, sender = User)
 
 
 

@@ -34,7 +34,7 @@ class LeadListView(LoginRequiredMixin,generic.ListView):
     def get_queryset(self):
         user = self.request.user
         if user.is_organizer:
-            queryset = Lead.objects.filter(organization = user.userprofilemodel, agent__isnull = False)
+            queryset = Lead.objects.filter(organization = user.userprofile, agent__isnull = False)
         else:
             queryset = Lead.objects.filter(organization =user.agent.organization, agent__isnull = False)
             queryset = queryset.filter(agent__user = user)
@@ -44,7 +44,7 @@ class LeadListView(LoginRequiredMixin,generic.ListView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
         if user.is_organizer:
-            queryset = Lead.objects.filter(organization = user.userprofilemodel, agent__isnull = True)
+            queryset = Lead.objects.filter(organization = user.userprofile, agent__isnull = True)
             context.update({
                 'unassigned_leads': queryset
             })
@@ -63,7 +63,7 @@ class LeadDetailView(LoginRequiredMixin, generic.DetailView):
     def get_queryset(self):
         user = self.request.user
         if user.is_organizer:
-            queryset = Lead.objects.filter(organization = user.userprofilemodel)
+            queryset = Lead.objects.filter(organization = user.userprofile)
         else:
             queryset = Lead.objects.filter(organization =user.agent.organization)
             queryset = queryset.filter(agent__user = user)
@@ -82,17 +82,21 @@ class LeadDetailView(LoginRequiredMixin, generic.DetailView):
 class LeadCreateView(OrganizerorLoginRequiredMixin,generic.CreateView):
     template_name = "leads/lead_create.html"
     form_class = LeadModelForm
-
     def get_success_url(self):
         return reverse("leads:lead-list")
 
     def form_valid(self, form):
+        lead = form.save(commit = False)
+        lead.organization = self.request.user.userprofile
+        lead.save()
+        
         subject = "A new lead has been created"
         message = "Go to the crm site to view the new lead details"
         from_email = "test@test.com"
         recipient_list = ["test2@test.com"]
         send_mail(subject, message, from_email, recipient_list)
         # we want to send email whenever a lead is created 
+
         return super(LeadCreateView, self).form_valid(form)
 
 
@@ -120,7 +124,7 @@ class LeadUpdateView(OrganizerorLoginRequiredMixin,generic.UpdateView):
         return reverse("leads:lead-list")
     def get_queryset(self):
         user = self.request.user
-        return Lead.objects.filter(organization = user.userprofilemodel)
+        return Lead.objects.filter(organization = user.userprofile)
 
 
 
@@ -143,7 +147,7 @@ class LeadDeleteView(OrganizerorLoginRequiredMixin,generic.DeleteView):
     template_name = "leads/lead_delete.html"
     def get_queryset(self):
         user = self.request.user
-        return Lead.objects.filter(organization = user.userprofilemodel)
+        return Lead.objects.filter(organization = user.userprofile)
 
     def get_success_url(self):
         return reverse('leads:lead-list')

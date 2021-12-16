@@ -12,7 +12,7 @@ class AgentListView(OrganizerorLoginRequiredMixin, generic.ListView):
     template_name = "agents/agent_list.html"
 
     def get_queryset(self):
-        orgs = self.request.user.userprofilemodel
+        orgs = self.request.user.userprofile
         return Agent.objects.filter(organization = orgs)
 
 
@@ -29,7 +29,7 @@ class AgentCreateView(OrganizerorLoginRequiredMixin, generic.CreateView):
         user.is_organizer = False
         user.save()
         user.set_password(f"{random.randint(0,100000)}")
-        Agent.objects.create(user = user, organization = self.request.user.userprofilemodel)
+        Agent.objects.create(user = user, organization = self.request.user.userprofile)
 
         send_mail(
             subject= "Invited as an agent",
@@ -37,7 +37,7 @@ class AgentCreateView(OrganizerorLoginRequiredMixin, generic.CreateView):
             from_email="master@mail.com",
             recipient_list=[user.email]       
         )
-        # agent.organization = self.request.user.userprofilemodel
+        # agent.organization = self.request.user.userprofile
         # agent.save()
         return super(AgentCreateView, self).form_valid(form)
 
