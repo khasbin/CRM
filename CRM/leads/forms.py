@@ -23,6 +23,10 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class AgentUpdateForm(forms.Form):
-    class Meta:
-        model = Agent
-        fields = ('organization', ) 
+    agent = forms.ModelChoiceField(queryset = Agent.objects.none())
+
+    def __init__(self, *args, **kwargs):
+        request = kwargs.pop("request")
+        agents = Agent.objects.filter(organization = request.user.userprofile)
+        super(AgentUpdateForm, self).__init__(*args, **kwargs)
+        self.fields["agent"].queryset = agents
