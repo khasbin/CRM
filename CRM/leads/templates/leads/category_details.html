@@ -1,1 +1,55 @@
- 
+{% extends 'base.html' %}
+
+{% block content %}
+<br />
+<div class="container flex justify-center mx-auto">
+    <h1>{{category.name}}</h1>
+</div>
+<br />
+<div class="container flex justify-center mx-auto">
+    <h2>The leads under this category are:  </h2>
+</div>
+<br />
+<div class="container flex justify-center mx-auto">
+    <div class="flex flex-col">
+        <div class="w-full">
+            <div class="border-b border-gray-200 shadow">
+                <table>
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-2 text-xs text-gray-500">
+                                First name
+                            </th>
+                            <th class="px-6 py-2 text-xs text-gray-500">
+                                Last Name
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+
+                        {% for lead in  category.leads.all %}
+                        
+                        <tr class="whitespace-nowrap">
+                            <td class="px-6 py-4 text-sm text-gray-500">
+                                <a class ="hover:text-red-700" href = {% url 'leads:lead-detail' lead.pk %}>
+                                {{lead.first_name}}
+                            </a></td> 
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-900">
+                                {{lead.last_name}}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock content %}
+
+

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse, request
 from .models import Lead, Agent, User,Category
-from .forms import LeadForm, LeadModelForm,CustomUserCreationForm, AgentUpdateForm
+from .forms import LeadForm, LeadModelForm,CustomUserCreationForm, AgentUpdateForm,CategoryUpdateForm
 from django.views import generic
 from django.core.mail import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -234,6 +234,17 @@ class CategoryListView(LoginRequiredMixin, generic.ListView):
 
 class CategoryDetailView(LoginRequiredMixin, generic.DetailView):
     template_name = "leads/category_details.html"
+    context_object_name = "category"
+
+    #This get_context_data can be simply overriden using category.leads.all in the templates
+    # def get_context_data(self, **kwargs):
+    #     context = super(CategoryDetailView, self).get_context_data(**kwargs)
+    #     leads = self.get_object().leads.all()
+    #     context.update({
+    #         "leads": leads
+    #     })
+    #     return context
+
 
     def get_queryset(self):
         user = self.request.user
@@ -243,3 +254,19 @@ class CategoryDetailView(LoginRequiredMixin, generic.DetailView):
             queryset = Category.objects.filter(organization =user.agent.organization)
         
         return queryset
+
+class CategoryUpdateView(LoginRequiredMixin, generic.UpdateView):
+    template_name = "leads/category_update.html"
+    form_class = CategoryUpdateForm
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_organizer:
+            queryset = Lead.objects.filter(organization = user.userprofile)
+        else:
+            queryset = Lead.objects.filter(organization = user.agent.userprofile)
+            queryset = queryset.filter(agent__user = user)
+        return queryset
+
+    def get_success_url(self):
+        return reverse("leads:lead-detail", kwargs = { "pk" :self.get_object().id})
