@@ -234,3 +234,12 @@ class CategoryListView(LoginRequiredMixin, generic.ListView):
 
 class CategoryDetailView(LoginRequiredMixin, generic.DetailView):
     template_name = "leads/category_details.html"
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_organizer:
+            queryset = Category.objects.filter(organization = user.userprofile)
+        else:
+            queryset = Category.objects.filter(organization =user.agent.organization)
+        
+        return queryset
