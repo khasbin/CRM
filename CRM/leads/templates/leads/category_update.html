@@ -12,11 +12,7 @@
           <a href ={% url 'leads:lead-detail' lead.pk %} class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1"
             >Lead Details</a
           >
-          <a class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1"  href ={% url 'leads:category-update' lead.pk %} 
-            >Category</a
-          >
-          <a href = {% url 'leads:lead-update' lead.pk %}
-          class="
+          <a  href ={% url 'leads:category-update' lead.pk %} class="
           flex-grow
           text-indigo-500
           border-b-2 border-indigo-500
@@ -24,6 +20,9 @@
           text-lg
           px-1
         "
+            >Category</a
+          >
+          <a href = {% url 'leads:lead-update' lead.pk %} class="flex-grow border-b-2 border-gray-300 py-2 text-lg px-1"
             >Update</a
           >
         </div>

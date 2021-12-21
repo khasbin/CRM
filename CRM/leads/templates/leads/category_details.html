@@ -3,11 +3,11 @@
 {% block content %}
 <br />
 <div class="container flex justify-center mx-auto">
-    <h1>Categories</h1>
+    <h1>{{category.name}}</h1>
 </div>
 <br />
 <div class="container flex justify-center mx-auto">
-    <h2>The categories of leads are listed below: </h2>
+    <h2>The leads under this category are:  </h2>
 </div>
 <br />
 <div class="container flex justify-center mx-auto">
@@ -18,23 +18,26 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-6 py-2 text-xs text-gray-500">
-                                Name
+                                First name
                             </th>
                             <th class="px-6 py-2 text-xs text-gray-500">
-                                Lead Count
+                                Last Name
                             </th>
                         </tr>
                     </thead>
                     <tbody class="bg-white">
-                        <tr>
-                            <td class = "px-6 py-4 text-sm text-gray-500">Uncategorized leads</td>
-                            <td class="px-6 py-4 text-sm text-gray-500">{{unassigned_lead_count}}</td>
-                        <tr>
-                        {% for category in category_list %}
+
+                        {% for lead in  category.leads.all %}
+                        
                         <tr class="whitespace-nowrap">
-                           <td> <a class="px-6 py-4 text-sm text-gray-500" href = {% url 'leads:category-detail' category.pk %}> {{category.name}} </a></td>
+                            <td class="px-6 py-4 text-sm text-gray-500">
+                                <a class ="hover:text-red-700" href = {% url 'leads:lead-detail' lead.pk %}>
+                                {{lead.first_name}}
+                            </a></td> 
                             <td class="px-6 py-4">
-                                <div class="text-sm text-gray-900">TODO count</div>
+                                <div class="text-sm text-gray-900">
+                                {{lead.last_name}}
+                                </div>
                             </td>
                         </tr>
                         {% endfor %}
