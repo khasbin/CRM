@@ -6,10 +6,9 @@
         <div class = "w-full mb-1 py-6 flex justify-between items-center border-b border-blue-200">
             <div>
             <h1 class = "text-4xl text-pink-700"> Leads </h1>
+            <h3 class = "text-black-300 underline"><a href = {% url 'leads:categories' %}>View Category</a></h3>
             </div>
-            <div>
-              <h1 class = "text-4xl text-pink-700"><a href = {% url 'leads:categories' %} >Category </a></h1>
-              </div>
+              
             {% if request.user.is_organizer %}
             <div>
             <a class = "text-gray-600 hover:text-pink-500" href = "{% url 'leads:lead-create' %}"> Create a new lead </a>
